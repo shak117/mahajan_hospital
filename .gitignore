@@ -1,0 +1,51 @@
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+build/
+**/dist/
+**/build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime files
+*.pid
+*.seed
+
+# Cache
+.cache/
+.vite/
+coverage/
+
+# IDE
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Backups
+backups/
+*.dump
+*.backup
+
+# Temporary files
+tmp/
+temp/

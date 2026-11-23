@@ -1,0 +1,20 @@
+{
+  "name": "mahajan-hospital-backend",
+  "version": "1.0.0",
+  "description": "Mahajan Multispecialist Hospital REST API for appointments and enquiries",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js",
+    "init-db": "node src/database/init.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "pg": "^8.13.1"
+  }
+}

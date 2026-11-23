@@ -1,0 +1,38 @@
+{
+  "appointments": [
+    {
+      "id": 1,
+      "full_name": "Anand Shinde",
+      "phone": "9822012345",
+      "email": "anand.shinde@example.com",
+      "department": "Orthopaedics",
+      "preferred_date": "2026-12-01",
+      "message": "Knee joint consultation regarding arthroscopy.",
+      "status": "Enquiry Received",
+      "created_at": "2026-11-23T05:56:45.542Z"
+    },
+    {
+      "id": 2,
+      "full_name": "Tester Shashank",
+      "phone": "08830464841",
+      "email": "pawarshashank222@gmail.com",
+      "department": "Orthopaedics",
+      "preferred_date": "2026-11-25",
+      "message": "test",
+      "status": "Enquiry Received",
+      "created_at": "2026-11-23T06:24:05.122Z"
+    }
+  ],
+  "contact_messages": [
+    {
+      "id": 1,
+      "name": "Sunita Deshmukh",
+      "phone": "9423000000",
+      "email": "sunita@example.com",
+      "subject": "Room Enquiry",
+      "message": "Inquiring about deluxe private room availability and visiting hours.",
+      "status": "New",
+      "created_at": "2026-11-23T05:56:45.557Z"
+    }
+  ]
+}
