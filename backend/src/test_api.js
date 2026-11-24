@@ -1,10 +1,13 @@
+process.env.NODE_ENV = 'test';
 import app from './app.js';
 import http from 'http';
+import { initDbConnection } from './database/db.js';
 
 const testServer = http.createServer(app);
 const TEST_PORT = 5055;
 
 testServer.listen(TEST_PORT, async () => {
+  await initDbConnection();
   console.log(`Test server running on port ${TEST_PORT}`);
 
   try {

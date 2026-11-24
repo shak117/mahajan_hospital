@@ -21,6 +21,17 @@
       "message": "test",
       "status": "Enquiry Received",
       "created_at": "2026-11-23T06:24:05.122Z"
+    },
+    {
+      "id": 3,
+      "full_name": "Anand Shinde",
+      "phone": "9822012345",
+      "email": "anand.shinde@example.com",
+      "department": "Orthopaedics",
+      "preferred_date": "2026-12-01",
+      "message": "Knee joint consultation regarding arthroscopy.",
+      "status": "Enquiry Received",
+      "created_at": "2026-11-23T10:33:54.766Z"
     }
   ],
   "contact_messages": [
@@ -33,6 +44,16 @@
       "message": "Inquiring about deluxe private room availability and visiting hours.",
       "status": "New",
       "created_at": "2026-11-23T05:56:45.557Z"
+    },
+    {
+      "id": 2,
+      "name": "Sunita Deshmukh",
+      "phone": "9423000000",
+      "email": "sunita@example.com",
+      "subject": "Room Enquiry",
+      "message": "Inquiring about deluxe private room availability and visiting hours.",
+      "status": "New",
+      "created_at": "2026-11-23T10:33:54.786Z"
     }
   ]
 }

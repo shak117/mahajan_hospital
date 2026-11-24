@@ -4,12 +4,18 @@
   "description": "Mahajan Multispecialist Hospital, Satara — Premium Website & Appointment System",
   "private": true,
   "scripts": {
+    "dev": "concurrently -k -n \"BACKEND,FRONTEND\" -c \"cyan.bold,magenta.bold\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:frontend": "npm run dev --prefix frontend",
     "dev:backend": "npm run dev --prefix backend",
+    "build": "npm run build --prefix frontend",
     "build:frontend": "npm run build --prefix frontend",
     "start:backend": "npm run start --prefix backend",
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
     "init:db": "npm run init-db --prefix backend",
     "test:backend": "node backend/src/test_api.js"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.0"
   },
   "keywords": [
     "hospital",

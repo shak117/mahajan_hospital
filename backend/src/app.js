@@ -10,17 +10,17 @@ import contactRoutes from './routes/contactRoutes.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // Security Middleware
 app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = [
-  'http://localhost:3000',
   'http://localhost:5173',
-  'http://127.0.0.1:3000',
   'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
@@ -92,14 +92,16 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server and initialize PostgreSQL
-app.listen(PORT, async () => {
-  console.log(`=======================================================`);
-  console.log(`🏥 Mahajan Multispecialist Hospital REST API`);
-  console.log(`🚀 Server listening on port ${PORT}`);
-  console.log(`🌐 Base URL: http://localhost:${PORT}`);
-  console.log(`=======================================================`);
-  await initDbConnection();
-});
+// Start server and initialize PostgreSQL when not in test mode
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, async () => {
+    console.log(`=======================================================`);
+    console.log(`🏥 Mahajan Multispecialist Hospital REST API`);
+    console.log(`🚀 Server listening on port ${PORT}`);
+    console.log(`🌐 Base URL: http://localhost:${PORT}`);
+    console.log(`=======================================================`);
+    await initDbConnection();
+  });
+}
 
 export default app;
