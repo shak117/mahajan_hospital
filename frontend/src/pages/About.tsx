@@ -1,17 +1,15 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
   ShieldCheck, 
   HeartHandshake, 
   Microscope, 
   Clock, 
-  Award, 
   ArrowRight,
-  CheckCircle2,
-  Users
+  Calendar
 } from 'lucide-react';
-import { HOSPITAL_INFO, HOSPITAL_HIGHLIGHTS } from '../config/hospitalData';
+import { HOSPITAL_HIGHLIGHTS, HOSPITAL_GALLERY } from '../config/hospitalData';
+import { ResponsiveImage } from '../components/ResponsiveImage';
 
 export const About: React.FC = () => {
   const values = [
@@ -42,10 +40,12 @@ export const About: React.FC = () => {
       {/* Header Banner */}
       <section className="relative py-16 sm:py-24 bg-hospital-navy text-white overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-25">
-          <img
-            src="/images/mahajan-building.jpg"
-            alt="Mahajan Hospital Building"
+          <ResponsiveImage
+            src="/assets/hospital/hospital-building-1400w.webp"
+            alt="Mahajan Multispecialist Hospital Building Exterior Satara"
             className="w-full h-full object-cover [object-position:center_30%]"
+            priority
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-hospital-navy/80" />
         </div>
@@ -103,53 +103,56 @@ export const About: React.FC = () => {
               Today, with robotic joint replacement platforms, laminar airflow modular operating suites, a 24/7 trauma casualty, and a dedicated team of over 15 medical specialists across 14 departments, we deliver seamless treatment from emergency triage to rehabilitation.
             </p>
 
-            <div className="pt-2 flex flex-col sm:flex-row gap-4">
+            <div className="pt-2 flex flex-wrap gap-3">
+              <Link
+                to="/contact#appointment-enquiry"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-emerald-600 text-white text-xs uppercase tracking-wider font-semibold hover:bg-emerald-700 transition-colors"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>Book an Appointment</span>
+              </Link>
               <Link
                 to="/directors"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-hospital-navy text-white text-xs uppercase tracking-wider font-semibold hover:bg-hospital-charcoal transition-colors"
               >
-                <span>Meet Medical Directors</span>
+                <span>Meet Our Doctors</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                to="/facilities"
+                to="/departments"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-slate-100 text-hospital-navy border border-hospital-border text-xs uppercase tracking-wider font-semibold hover:bg-slate-200 transition-colors"
               >
-                <span>View Facilities</span>
+                <span>Explore Departments</span>
               </Link>
             </div>
           </div>
 
           <div className="lg:col-span-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-2xl overflow-hidden shadow-subtle border border-hospital-border">
-                <img
-                  src="/images/about-us1.avif"
-                  alt="Medical Team at Mahajan Hospital"
-                  className="w-full h-48 sm:h-64 object-cover"
-                />
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-subtle border border-hospital-border mt-8">
-                <img
-                  src="/images/about-us2.avif"
-                  alt="Surgical Care at Mahajan Hospital"
-                  className="w-full h-48 sm:h-64 object-cover"
-                />
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-subtle border border-hospital-border">
-                <img
-                  src="/images/about-us3.avif"
-                  alt="Diagnostic Technology"
-                  className="w-full h-48 sm:h-64 object-cover"
-                />
-              </div>
-              <div className="rounded-2xl overflow-hidden shadow-subtle border border-hospital-border mt-8">
-                <img
-                  src="/images/facilities-emergency-care.avif"
-                  alt="Emergency Care Facility"
-                  className="w-full h-48 sm:h-64 object-cover"
-                />
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {HOSPITAL_GALLERY.slice(0, 4).map((photo, idx) => (
+                <div
+                  key={photo.id}
+                  className={`relative aspect-[3/2] rounded-2xl overflow-hidden shadow-subtle border border-hospital-border bg-slate-100 group ${
+                    idx % 2 === 1 ? 'sm:mt-6' : ''
+                  }`}
+                >
+                  <ResponsiveImage
+                    src={photo.image}
+                    alt={photo.alt}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, 320px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-hospital-navy/85 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3.5 right-3.5 text-white">
+                    <span className="text-[10px] uppercase tracking-wider font-semibold text-sky-300 block">
+                      {photo.category}
+                    </span>
+                    <span className="text-xs font-bold leading-snug block">
+                      {photo.title}
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -128,7 +128,7 @@ export const HeroVideo: React.FC = () => {
         >
           {/* Primary CTA */}
           <Link
-            to="/contact"
+            to="/contact#appointment-enquiry"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-white text-hospital-navy font-semibold text-sm hover:bg-slate-100 active:scale-95 transition-all duration-200 shadow-floating"
           >
             <Calendar className="w-4 h-4 text-sky-600" />

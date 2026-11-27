@@ -177,29 +177,25 @@ export const Navbar: React.FC<NavbarProps> = () => {
                 <span className="tracking-wide">24/7: 02162 232299</span>
               </a>
 
-              {/* WhatsApp Book Appointment Button */}
-              <a
-                href={HOSPITAL_INFO.contact.whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              {/* Book Appointment Button routing into customized WhatsApp Enquiry flow */}
+              <Link
+                to="/contact#appointment-enquiry"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#4C2A75] hover:bg-[#3D1F5F] text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow transition-all duration-200 active:scale-95"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-400" />
-                <span>Book Appointment</span>
-              </a>
+                <span>Book an Appointment</span>
+              </Link>
             </div>
 
             {/* Mobile Hamburger & Call Button */}
             <div className="flex lg:hidden items-center gap-2">
-              <a
-                href={HOSPITAL_INFO.contact.whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/contact#appointment-enquiry"
                 className="p-2 rounded-full text-white bg-[#4C2A75] hover:bg-[#3D1F5F] shadow-sm"
-                aria-label="Book Appointment on WhatsApp"
+                aria-label="Book an Appointment"
               >
                 <MessageCircle className="w-4 h-4" />
-              </a>
+              </Link>
 
               <a
                 href={`tel:${HOSPITAL_INFO.contact.emergencyPhoneClean}`}
@@ -263,15 +259,14 @@ export const Navbar: React.FC<NavbarProps> = () => {
             </div>
 
             <div className="pt-6 border-t border-gray-100 space-y-3">
-              <a
-                href={HOSPITAL_INFO.contact.whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/contact#appointment-enquiry"
+                onClick={() => setMobileMenuOpen(false)}
                 className="w-full py-3 px-4 rounded-xl text-center bg-[#4C2A75] text-white font-semibold text-sm hover:bg-[#3D1F5F] shadow-sm flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4 text-emerald-400" />
-                <span>Book Appointment (WhatsApp)</span>
-              </a>
+                <span>Book an Appointment</span>
+              </Link>
 
               <a
                 href={`tel:${HOSPITAL_INFO.contact.emergencyPhoneClean}`}

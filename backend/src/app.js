@@ -28,7 +28,13 @@ app.use(cors({
   origin: (origin, callback) => {
     // allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
+    const isAllowed =
+      allowedOrigins.includes(origin) ||
+      process.env.NODE_ENV !== 'production' ||
+      origin.endsWith('.vercel.app') ||
+      (process.env.VERCEL_URL && origin === `https://${process.env.VERCEL_URL}`);
+
+    if (isAllowed) {
       return callback(null, true);
     }
     return callback(new Error('CORS policy: Access denied'));

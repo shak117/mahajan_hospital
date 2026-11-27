@@ -1,7 +1,8 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle2, Shield, HeartPulse, Award } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { CheckCircle2, Shield, HeartPulse, Award, ArrowRight } from 'lucide-react';
 import { HOSPITAL_INFO } from '../config/hospitalData';
+import { ResponsiveImage } from '../components/ResponsiveImage';
 
 export const IntroductionSection: React.FC = () => {
   const pillars = [
@@ -27,6 +28,24 @@ export const IntroductionSection: React.FC = () => {
     }
   ];
 
+  const interiorHighlights = [
+    {
+      src: '/assets/hospital/ortho-reception-1400w.webp',
+      alt: 'Main Orthopaedic Reception and Consultation Desk at Mahajan Hospital Satara',
+      label: 'Reception & OPD Desk',
+    },
+    {
+      src: '/assets/facilities/modular-laminar-ot-1400w.webp',
+      alt: 'Modular Operating Theatre with Laminar Air Flow at Mahajan Hospital Satara',
+      label: 'Modular Laminar OT',
+    },
+    {
+      src: '/assets/facilities/ultramodern-icu-1400w.webp',
+      alt: 'Ultramodern Intensive Care Unit at Mahajan Hospital Satara',
+      label: 'Ultramodern ICU',
+    },
+  ];
+
   return (
     <section id="introduction-section" className="py-24 sm:py-32 bg-hospital-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,18 +63,18 @@ export const IntroductionSection: React.FC = () => {
         </div>
 
         {/* Two-Column Editorial Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Image with architectural presentation */}
-          <div className="lg:col-span-7">
-            <div className="relative rounded-2xl overflow-hidden shadow-subtle border border-hospital-border bg-slate-100 group">
-              <img
-                src="/images/mahajan-building.jpg"
-                alt="Mahajan Multispecialist Hospital Satara Facility"
-                className="w-full h-[380px] sm:h-[480px] object-cover transition-transform duration-700 group-hover:scale-102"
-                loading="lazy"
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left Column: Exterior & Real Interior Infrastructure Showcase */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="relative aspect-[3/2] rounded-2xl overflow-hidden shadow-subtle border border-hospital-border bg-slate-100 group">
+              <ResponsiveImage
+                src="/assets/hospital/hospital-building-1400w.webp"
+                alt="Mahajan Multispecialist Hospital Satara Building Exterior"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                sizes="(max-width: 1024px) 100vw, 720px"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-hospital-navy/80 via-transparent to-transparent" />
-              
+
               <div className="absolute bottom-6 left-6 right-6 text-white">
                 <span className="text-[10px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded bg-white/20 backdrop-blur-md mb-2 inline-block">
                   Powai Naka • Satara
@@ -65,11 +84,32 @@ export const IntroductionSection: React.FC = () => {
                 </p>
               </div>
             </div>
+
+            {/* Authentic Interior Photography Trio */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+              {interiorHighlights.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="relative aspect-[3/2] rounded-xl overflow-hidden border border-hospital-border bg-slate-100 shadow-subtle group"
+                >
+                  <ResponsiveImage
+                    src={item.src}
+                    alt={item.alt}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 33vw, 240px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-hospital-navy/85 via-hospital-navy/10 to-transparent" />
+                  <span className="absolute bottom-2 left-2.5 right-2 text-[10px] sm:text-xs font-semibold text-white leading-tight">
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Right Column: Key Pillars */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="space-y-6">
+            <div className="space-y-4">
               {pillars.map((pillar, idx) => {
                 const Icon = pillar.icon;
                 return (
@@ -101,6 +141,23 @@ export const IntroductionSection: React.FC = () => {
               <p className="text-xs text-sky-900 font-medium">
                 Comprehensive healthcare under one roof — from emergency casualty to robotic joint restoration.
               </p>
+            </div>
+
+            {/* Secondary Funnel CTAs */}
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-hospital-navy text-white text-xs font-semibold uppercase tracking-wider hover:bg-hospital-charcoal transition-colors"
+              >
+                <span>Discover Our Hospital</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+              <Link
+                to="/departments"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-hospital-border text-hospital-navy text-xs font-semibold uppercase tracking-wider hover:bg-slate-50 transition-colors"
+              >
+                <span>Explore Departments</span>
+              </Link>
             </div>
           </div>
         </div>

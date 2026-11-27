@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import { FACILITIES } from '../config/hospitalData';
+import { ResponsiveImage } from '../components/ResponsiveImage';
 
 export const FacilitiesSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -13,28 +13,39 @@ export const FacilitiesSection: React.FC = () => {
     ? FACILITIES
     : FACILITIES.filter(f => f.category === activeCategory);
 
-  // Key hero facilities for the editorial alternating spotlight
+  // Authentic facility spotlights using real hospital photography from Google Drive
   const spotlightFacilities = [
     {
       title: "Modular Operating Theatre with Laminar Air Flow",
       category: "Surgical Standard",
-      description: "Class 100 sterile surgical suites engineered with continuous positive-pressure HEPA filtration and horizontal laminar air currents, virtually eliminating airborne particulate and infection risk during complex joint and spine surgeries.",
+      description: "Class 100 sterile surgical suites engineered with continuous positive-pressure HEPA filtration, horizontal laminar air currents, spine operating microscope, and intraoperative C-Arm integration.",
       stats: "Ultra-Clean ISO Class 5 Environment",
-      image: "/images/facilities-LASER-machines.avif"
+      image: "/assets/facilities/modular-laminar-ot-1400w.webp",
+      alt: "Modular Operating Theatre with Laminar Air Flow HEPA Ceiling at Mahajan Hospital Satara"
     },
     {
       title: "Ultramodern ICU & 24/7 Casualty",
       category: "Critical Care",
-      description: "Equipped with state-of-the-art invasive haemodynamic monitoring, multi-mode ventilators, and physical round-the-clock intensivist coverage, providing uninterrupted vigilance during critical golden-hour emergencies.",
+      description: "Equipped with motorized ICU beds, invasive haemodynamic monitoring, Dräger mechanical ventilators, and round-the-clock intensivist coverage for uninterrupted golden-hour emergencies.",
       stats: "24/7 In-House Intensivist Presence",
-      image: "/images/facilities-Ultramodern-ICU.avif"
+      image: "/assets/facilities/ultramodern-icu-1400w.webp",
+      alt: "Ultramodern ICU Motorized Beds and Monitoring Rails at Mahajan Hospital Satara"
     },
     {
-      title: "Robotic Joint Replacement & Arthroscope",
-      category: "Precision Robotics",
-      description: "Sub-millimeter accurate bone resection and patient-customized implant balancing for knee and hip restorations, paired with 4K optical arthroscopy for rapid healing and minimal post-operative discomfort.",
-      stats: "Sub-Millimeter Robotic Precision",
-      image: "/images/dept1.jpg"
+      title: "Surgix C-Arm Imaging & Stryker Arthroscopy",
+      category: "Precision Surgical Tech",
+      description: "Real-time flat-panel C-Arm fluoroscopy and high-definition optical arthroscopy towers enabling sub-millimeter bone alignment and minimally invasive joint reconstructions.",
+      stats: "Real-Time Intraoperative Guidance",
+      image: "/assets/facilities/c-arm-imaging-1400w.webp",
+      alt: "Surgix Flat-Panel C-Arm Fluoroscopy Unit inside Modular OT at Mahajan Hospital"
+    },
+    {
+      title: "Welcoming Reception, Waiting Areas & Deluxe Suites",
+      category: "Patient Comfort",
+      description: "Organized multi-floor reception desks, comfortable family waiting halls, private consulting chambers, and bright deluxe rooms designed for calm, dignified recovery.",
+      stats: "Thoughtful Patient-First Hospitality",
+      image: "/assets/hospital/ortho-reception-1400w.webp",
+      alt: "Orthopaedic Reception Desk and Waiting Area at Mahajan Multispecialist Hospital Satara"
     }
   ];
 
@@ -67,12 +78,12 @@ export const FacilitiesSection: React.FC = () => {
               >
                 {/* Image */}
                 <div className={`lg:col-span-7 ${isReversed ? 'lg:order-2' : ''}`}>
-                  <div className="relative rounded-2xl overflow-hidden shadow-subtle border border-hospital-border bg-white group">
-                    <img
+                  <div className="relative aspect-[3/2] rounded-2xl overflow-hidden shadow-subtle border border-hospital-border bg-white group">
+                    <ResponsiveImage
                       src={facility.image}
-                      alt={facility.title}
-                      className="w-full h-[320px] sm:h-[420px] object-cover transition-transform duration-700 group-hover:scale-102"
-                      loading="lazy"
+                      alt={facility.alt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                      sizes="(max-width: 1024px) 100vw, 720px"
                     />
                     <div className="absolute top-4 left-4">
                       <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-hospital-navy/80 backdrop-blur-md text-white border border-white/20">
@@ -106,12 +117,12 @@ export const FacilitiesSection: React.FC = () => {
           })}
         </div>
 
-        {/* Full 18 Verified Facilities Gallery Filter */}
+        {/* Full Verified Facilities Gallery Filter */}
         <div className="pt-12 border-t border-hospital-border">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
             <div>
               <h3 className="text-xl sm:text-2xl font-bold text-hospital-navy tracking-tight">
-                All 18 Specialized Hospital Facilities
+                All {FACILITIES.length} Specialized Hospital Facilities
               </h3>
               <p className="text-xs text-hospital-slate mt-1">
                 Verified hospital infrastructure active at our Satara premises
@@ -165,13 +176,19 @@ export const FacilitiesSection: React.FC = () => {
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-5">
             <Link
               to="/facilities"
               className="inline-flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-hospital-navy hover:text-hospital-accent transition-colors"
             >
               <span>Explore complete facility profiles and room accommodations</span>
               <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              to="/contact#appointment-enquiry"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-hospital-navy text-white text-xs uppercase tracking-wider font-semibold hover:bg-hospital-charcoal transition-colors"
+            >
+              <span>Book an Appointment</span>
             </Link>
           </div>
         </div>

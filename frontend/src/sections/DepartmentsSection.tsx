@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Check, X, ArrowRight } from 'lucide-react';
 import { DEPARTMENTS, DepartmentItem } from '../config/hospitalData';
+import { ResponsiveImage } from '../components/ResponsiveImage';
 
 export const DepartmentsSection: React.FC = () => {
   const [selectedDept, setSelectedDept] = useState<DepartmentItem | null>(null);
@@ -74,13 +75,19 @@ export const DepartmentsSection: React.FC = () => {
         </div>
 
         {/* View All Dedicated Page CTA */}
-        <div className="mt-16 text-center">
+        <div className="mt-16 flex flex-wrap items-center justify-center gap-4">
           <Link
             to="/departments"
             className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-hospital-navy text-white text-xs uppercase tracking-wider font-semibold hover:bg-hospital-charcoal transition-all shadow-subtle"
           >
-            <span>Explore Comprehensive Department Guides</span>
+            <span>Explore Departments</span>
             <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            to="/contact#appointment-enquiry"
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white border border-hospital-border text-hospital-navy text-xs uppercase tracking-wider font-semibold hover:bg-slate-50 transition-all"
+          >
+            <span>Book an Appointment</span>
           </Link>
         </div>
       </div>
@@ -94,8 +101,22 @@ export const DepartmentsSection: React.FC = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.2 }}
-              className="relative w-full max-w-xl bg-white rounded-2xl shadow-floating border border-hospital-border overflow-hidden p-6 sm:p-8"
+              className="relative w-full max-w-xl bg-white rounded-2xl shadow-floating border border-hospital-border overflow-hidden max-h-[90vh] overflow-y-auto"
             >
+              {/* Authentic Department Photo Header (if available) */}
+              {selectedDept.image && (
+                <div className="relative aspect-[3/2] w-full bg-slate-100 overflow-hidden">
+                  <ResponsiveImage
+                    src={selectedDept.image}
+                    alt={selectedDept.imageAlt || selectedDept.name}
+                    className="w-full h-full object-cover"
+                    sizes="600px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-hospital-navy/50 via-transparent to-transparent" />
+                </div>
+              )}
+
+              <div className="p-6 sm:p-8 relative">
               {/* Close Button */}
               <button
                 onClick={() => setSelectedDept(null)}
@@ -141,11 +162,11 @@ export const DepartmentsSection: React.FC = () => {
               {/* Action buttons */}
               <div className="mt-8 flex flex-col sm:flex-row items-center gap-3">
                 <Link
-                  to="/contact"
+                  to={`/contact?department=${encodeURIComponent(selectedDept.name)}#appointment-enquiry`}
                   onClick={() => setSelectedDept(null)}
                   className="w-full sm:w-auto flex-1 text-center py-2.5 px-4 rounded-xl bg-hospital-navy text-white text-xs uppercase tracking-wider font-semibold hover:bg-hospital-charcoal transition-colors"
                 >
-                  Consult this Department
+                  Book an Appointment
                 </Link>
                 <button
                   onClick={() => setSelectedDept(null)}
@@ -153,6 +174,7 @@ export const DepartmentsSection: React.FC = () => {
                 >
                   Close
                 </button>
+              </div>
               </div>
             </motion.div>
           </div>

@@ -1,10 +1,12 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Award, CheckCircle2, Calendar, Phone, ShieldCheck, ArrowRight, Stethoscope } from 'lucide-react';
+import { Award, CheckCircle2, Calendar, Phone, Stethoscope } from 'lucide-react';
 import { DIRECTORS, HOSPITAL_INFO } from '../config/hospitalData';
 
 export const Directors: React.FC = () => {
+  const drAbhishek = DIRECTORS[0];
+  const drMugdha = DIRECTORS[1];
+
   return (
     <div className="pt-24 sm:pt-28 pb-20 bg-hospital-white min-h-screen">
       {/* Header Banner */}
@@ -15,7 +17,7 @@ export const Directors: React.FC = () => {
               Executive Leadership
             </span>
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
-              Clinical Leadership & Governance.
+              Clinical Leadership &amp; Governance.
             </h1>
             <p className="mt-4 text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl">
               Mahajan Multispecialist Hospital is directed by internationally credentialed surgical and critical care specialists committed to bringing world-class healthcare to Satara.
@@ -29,25 +31,41 @@ export const Directors: React.FC = () => {
         {/* Director 1: Dr. Abhishek Suresh Mahajan */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div className="lg:col-span-5">
-            <div className="sticky top-28 rounded-3xl overflow-hidden shadow-premium border border-hospital-border bg-slate-100">
-              <img
-                src="/images/dept1.jpg"
-                alt="Dr. Abhishek Suresh Mahajan"
-                className="w-full aspect-[4/5] object-cover object-top"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.src = '/images/mahajan-building.jpg';
-                }}
-              />
+            <div className="sticky top-28 rounded-3xl overflow-hidden shadow-premium border border-hospital-border bg-white">
+              {drAbhishek?.image ? (
+                <img
+                  src={drAbhishek.image}
+                  alt={drAbhishek.name}
+                  className="w-full aspect-[4/5] object-cover object-top"
+                />
+              ) : (
+                <div className="bg-gradient-to-br from-hospital-navy via-[#173654] to-[#234d75] p-8 text-white">
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-sky-200 border border-white/15">
+                      <Award className="w-3.5 h-3.5 text-sky-300" />
+                      Managing Director
+                    </span>
+                    <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-xl font-bold tracking-wider text-sky-200">
+                      AM
+                    </div>
+                  </div>
+                  <p className="text-xs uppercase tracking-widest text-sky-300 font-semibold">
+                    Orthopaedic &amp; Robotic Joint Centre
+                  </p>
+                  <p className="mt-2 text-lg font-bold text-white leading-snug">
+                    FACS (USA) • FICS (USA) • MRCS (UK) • MS (Orth)
+                  </p>
+                </div>
+              )}
               <div className="p-6 bg-white border-t border-hospital-border">
                 <span className="text-xs uppercase tracking-widest text-hospital-accent font-bold block mb-1">
-                  Managing Director & Consultant
+                  Managing Director &amp; Consultant
                 </span>
                 <h3 className="text-xl font-bold text-hospital-navy">
                   Dr. Abhishek Suresh Mahajan
                 </h3>
                 <p className="text-xs text-hospital-slate mt-1 font-medium">
-                  Consultant Orthopaedic & Robotic Joint Surgeon
+                  Consultant Orthopaedic &amp; Robotic Joint Surgeon
                 </p>
                 <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
                   <a
@@ -58,11 +76,11 @@ export const Directors: React.FC = () => {
                     <span>Call OPD Desk</span>
                   </a>
                   <Link
-                    to="/contact"
+                    to="/contact?department=Orthopaedics#appointment-enquiry"
                     className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-hospital-accent hover:underline"
                   >
                     <Calendar className="w-3.5 h-3.5" />
-                    <span>Enquire Slot</span>
+                    <span>Book an Appointment</span>
                   </Link>
                 </div>
               </div>
@@ -128,11 +146,11 @@ export const Directors: React.FC = () => {
 
             <div className="pt-4 border-t border-hospital-border">
               <Link
-                to="/contact"
+                to="/contact?department=Orthopaedics#appointment-enquiry"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-hospital-navy text-white text-xs uppercase tracking-wider font-semibold hover:bg-hospital-charcoal transition-colors"
               >
                 <Stethoscope className="w-4 h-4 text-sky-400" />
-                <span>Book Orthopaedic Consultation</span>
+                <span>Book an Appointment</span>
               </Link>
             </div>
           </div>
@@ -144,25 +162,41 @@ export const Directors: React.FC = () => {
         {/* Director 2: Dr. Mugdha Abhishek Mahajan */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           <div className="lg:col-span-5">
-            <div className="sticky top-28 rounded-3xl overflow-hidden shadow-premium border border-hospital-border bg-slate-100">
-              <img
-                src="/images/about-us5.avif"
-                alt="Dr. Mugdha Abhishek Mahajan"
-                className="w-full aspect-[4/5] object-cover object-top"
-                onError={(e) => {
-                  const target = e.currentTarget;
-                  target.src = '/images/mahajan-building.jpg';
-                }}
-              />
+            <div className="sticky top-28 rounded-3xl overflow-hidden shadow-premium border border-hospital-border bg-white">
+              {drMugdha?.image ? (
+                <img
+                  src={drMugdha.image}
+                  alt={drMugdha.name}
+                  className="w-full aspect-[4/5] object-cover object-top"
+                />
+              ) : (
+                <div className="bg-gradient-to-br from-hospital-navy via-[#173654] to-[#234d75] p-8 text-white">
+                  <div className="flex items-center justify-between mb-8">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-sky-200 border border-white/15">
+                      <Award className="w-3.5 h-3.5 text-sky-300" />
+                      Critical Care Director
+                    </span>
+                    <div className="w-14 h-14 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-xl font-bold tracking-wider text-sky-200">
+                      MM
+                    </div>
+                  </div>
+                  <p className="text-xs uppercase tracking-widest text-sky-300 font-semibold">
+                    Critical Care, Trauma &amp; Pain Clinic
+                  </p>
+                  <p className="mt-2 text-lg font-bold text-white leading-snug">
+                    MBBS • MD (Anaesthesiology) • DNB
+                  </p>
+                </div>
+              )}
               <div className="p-6 bg-white border-t border-hospital-border">
                 <span className="text-xs uppercase tracking-widest text-hospital-accent font-bold block mb-1">
-                  Director of Critical Care & Pain Management
+                  Director of Critical Care &amp; Pain Management
                 </span>
                 <h3 className="text-xl font-bold text-hospital-navy">
                   Dr. Mugdha Abhishek Mahajan
                 </h3>
                 <p className="text-xs text-hospital-slate mt-1 font-medium">
-                  Consultant Anaesthetist & Intensivist
+                  Consultant Anaesthetist &amp; Intensivist
                 </p>
                 <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between">
                   <a
@@ -173,11 +207,11 @@ export const Directors: React.FC = () => {
                     <span>24/7 ICU Desk</span>
                   </a>
                   <Link
-                    to="/contact"
+                    to="/contact?department=Anaesthesia%20%26%20Pain%20Management#appointment-enquiry"
                     className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wider font-semibold text-hospital-accent hover:underline"
                   >
                     <Calendar className="w-3.5 h-3.5" />
-                    <span>Pain Clinic</span>
+                    <span>Book an Appointment</span>
                   </Link>
                 </div>
               </div>
@@ -243,11 +277,11 @@ export const Directors: React.FC = () => {
 
             <div className="pt-4 border-t border-hospital-border">
               <Link
-                to="/contact"
+                to="/contact?department=Anaesthesia%20%26%20Pain%20Management#appointment-enquiry"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-hospital-navy text-white text-xs uppercase tracking-wider font-semibold hover:bg-hospital-charcoal transition-colors"
               >
                 <Stethoscope className="w-4 h-4 text-sky-400" />
-                <span>Consult Pain Management Clinic</span>
+                <span>Book an Appointment</span>
               </Link>
             </div>
           </div>

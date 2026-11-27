@@ -11,6 +11,7 @@ export interface DepartmentItem {
   description: string;
   details: string[];
   image: string;
+  imageAlt?: string;
   iconName: string;
 }
 
@@ -21,6 +22,16 @@ export interface FacilityItem {
   description: string;
   highlight: string;
   image?: string;
+  imageAlt?: string;
+}
+
+export interface GalleryItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  alt: string;
+  category: string;
 }
 
 export interface DirectorItem {
@@ -87,6 +98,57 @@ export const HOSPITAL_HIGHLIGHTS: HighlightItem[] = [
   }
 ];
 
+export const HOSPITAL_GALLERY: GalleryItem[] = [
+  {
+    id: "ortho-reception",
+    title: "Main Reception & Consultation Desk",
+    subtitle: "Welcoming helpdesk & digital specialist directory",
+    image: "/assets/hospital/ortho-reception-1400w.webp",
+    alt: "Main Orthopaedic Reception Desk and Specialist Directory at Mahajan Hospital Satara",
+    category: "Reception"
+  },
+  {
+    id: "waiting-lounge",
+    title: "Patient Waiting Lounge",
+    subtitle: "Spacious seating beside OPD coordination desk",
+    image: "/assets/hospital/waiting-lounge-1400w.webp",
+    alt: "Spacious Waiting Area and Reception Counter at Mahajan Multispecialist Hospital Satara",
+    category: "Waiting Area"
+  },
+  {
+    id: "laminar-ot",
+    title: "Laminar Air Flow Modular OT",
+    subtitle: "Class 100 surgical theatre with C-Arm & spine microscope",
+    image: "/assets/facilities/modular-laminar-ot-1400w.webp",
+    alt: "Modular Operating Theatre with Laminar Air Flow, C-Arm and Spine Microscope at Mahajan Hospital",
+    category: "Operation Theatre"
+  },
+  {
+    id: "ultramodern-icu",
+    title: "Ultramodern Intensive Care Unit",
+    subtitle: "Naturally lit multi-bed ICU with continuous monitoring",
+    image: "/assets/facilities/ultramodern-icu-1400w.webp",
+    alt: "Ultramodern Intensive Care Unit with Motorized ICU Beds and Monitors at Mahajan Hospital Satara",
+    category: "Critical Care"
+  },
+  {
+    id: "deluxe-room",
+    title: "Deluxe Private Patient Suite",
+    subtitle: "Bright recovery room with central medical gas panel",
+    image: "/assets/facilities/deluxe-room-1400w.webp",
+    alt: "Deluxe Private Patient Suite at Mahajan Multispecialist Hospital Satara",
+    category: "Patient Rooms"
+  },
+  {
+    id: "floor-one-reception",
+    title: "First Floor OPD Helpdesk",
+    subtitle: "Clean, organized outpatient floor & corridor access",
+    image: "/assets/hospital/floor-one-reception-1400w.webp",
+    alt: "First Floor Reception and Consultation Corridor at Mahajan Hospital Satara",
+    category: "Interiors"
+  }
+];
+
 export const DIRECTORS: DirectorItem[] = [
   {
     name: "Dr. Abhishek Suresh Mahajan",
@@ -100,7 +162,7 @@ export const DIRECTORS: DirectorItem[] = [
       "Complex Orthopaedic Procedures"
     ],
     bio: "Dr. Abhishek Suresh Mahajan is an internationally credentialed orthopaedic surgeon holding prestigious fellowships across the United States and the United Kingdom. He pioneered modern robotic joint reconstruction and minimally invasive arthroscopic surgical care in Satara, dedicated to restoring full mobility and functional independence for every patient.",
-    image: "/images/dept1.jpg"
+    image: ""
   },
   {
     name: "Dr. Mugdha Abhishek Mahajan",
@@ -114,7 +176,7 @@ export const DIRECTORS: DirectorItem[] = [
       "First Aid & Golden Hour Response"
     ],
     bio: "Dr. Mugdha Abhishek Mahajan is a board-certified anaesthetist and critical care intensivist specializing in acute trauma resuscitation, round-the-clock ICU vigilance, and ultrasound-guided targeted pain management therapies, delivering patient safety and comfort at every stage of medical treatment.",
-    image: "/images/about-us5.avif"
+    image: ""
   }
 ];
 
@@ -130,7 +192,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Emergency Crash Carts & Advanced Ventilator Support",
       "In-house Emergency Ultrasound & Rapid Diagnostics"
     ],
-    image: "/images/facilities-emergency-care.avif",
+    image: "/assets/departments/trauma-emergency-1400w.webp",
+    imageAlt: "24/7 Trauma and Emergency Casualty Unit at Mahajan Multispecialist Hospital Satara",
     iconName: "Activity"
   },
   {
@@ -144,7 +207,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Complex Pelvic & Acetabular Fracture Surgeries",
       "Sports Injury Rehabilitation & Geriatric Bone Care"
     ],
-    image: "/images/dept1.jpg",
+    image: "/assets/departments/orthopaedics-1400w.webp",
+    imageAlt: "Orthopaedic Consultation Suite with Joint Models at Mahajan Hospital Satara",
     iconName: "Bone"
   },
   {
@@ -158,7 +222,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Comprehensive Hair Loss & Scalp Therapies",
       "Clinical Dermatological Surgeries"
     ],
-    image: "/images/facilities-LASER-machines.avif",
+    image: "/assets/departments/dermatology-cosmetology-1400w.webp",
+    imageAlt: "Dermatology and Cosmetology Laser Suite at Mahajan Hospital Satara",
     iconName: "Sparkles"
   },
   {
@@ -172,7 +237,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "High-Risk Anaesthetic Management",
       "Painless Labour & Epidural Analgesia"
     ],
-    image: "/images/about-us1.avif",
+    image: "/assets/departments/anaesthesia-pain-1400w.webp",
+    imageAlt: "Modern Anaesthesia Workstation and Patient Monitor at Mahajan Hospital OT",
     iconName: "HeartPulse"
   },
   {
@@ -186,7 +252,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Minimally Invasive Spinal Fusion & Disc Repair",
       "Neuro-critical Care Monitoring"
     ],
-    image: "/images/dept3.avif",
+    image: "/assets/departments/neurosurgery-1400w.webp",
+    imageAlt: "Spine and Neurosurgery Operating Microscope at Mahajan Hospital Satara",
     iconName: "Brain"
   },
   {
@@ -200,7 +267,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Sepsis, ARDS & Cardiorespiratory Management",
       "Diabetic & Hypertension Comprehensive Control"
     ],
-    image: "/images/facilities-Ultramodern-ICU.avif",
+    image: "/assets/departments/icu-critical-care-1400w.webp",
+    imageAlt: "Ultramodern Multi-Bed ICU for General Medicine and Critical Care at Mahajan Hospital",
     iconName: "Stethoscope"
   },
   {
@@ -214,7 +282,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Gastrointestinal & Colorectal Interventions",
       "Day-care Minor Surgical Procedures"
     ],
-    image: "/images/dept2.avif",
+    image: "/assets/departments/general-surgery-laparoscopy-1400w.webp",
+    imageAlt: "Laparoscopic and Endoscopic Surgical Tower in Modular OT at Mahajan Hospital",
     iconName: "Scissors"
   },
   {
@@ -228,7 +297,7 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Acute Burn Management & Contracture Release",
       "Cosmetic Contour & Scar Revision"
     ],
-    image: "/images/about-us2.avif",
+    image: "",
     iconName: "ShieldCheck"
   },
   {
@@ -242,7 +311,7 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Diabetic Limb Salvage & Foot Ulcer Healing",
       "AV Fistula Creation for Dialysis Access"
     ],
-    image: "/images/about-us3.avif",
+    image: "",
     iconName: "Workflow"
   },
   {
@@ -256,7 +325,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Histopathology & Cytological Examinations",
       "Stringent Internal & External Quality Controls"
     ],
-    image: "/images/about-us1.avif",
+    image: "/assets/departments/pathology-1400w.webp",
+    imageAlt: "In-House Automated Pathology and Diagnostic Laboratory at Mahajan Hospital Satara",
     iconName: "Microscope"
   },
   {
@@ -270,7 +340,8 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "High-Resolution Ultrasonography & Doppler",
       "Bedside Mobile Radiography for ICU Patients"
     ],
-    image: "/images/facilities-room.avif",
+    image: "/assets/departments/radiology-1400w.webp",
+    imageAlt: "Digital X-Ray and Diagnostic Imaging Unit at Mahajan Hospital Satara",
     iconName: "Scan"
   },
   {
@@ -284,7 +355,7 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Menopause & Hormonal Disorder Management",
       "Cervical Screening & Preventive Care"
     ],
-    image: "/images/about-us2.avif",
+    image: "",
     iconName: "Heart"
   },
   {
@@ -298,7 +369,7 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Orthognathic Jaw Realignment",
       "Oral Surgical Pathology Excision"
     ],
-    image: "/images/dept3.avif",
+    image: "",
     iconName: "Smile"
   },
   {
@@ -312,7 +383,7 @@ export const DEPARTMENTS: DepartmentItem[] = [
       "Stricture Urethra & Reconstructive Urology",
       "Comprehensive Uro-flowmetry Testing"
     ],
-    image: "/images/facilities-emergency-care.avif",
+    image: "",
     iconName: "Shield"
   }
 ];
@@ -324,7 +395,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Critical Care",
     description: "Round-the-clock emergency casualty with immediate triage, resuscitation bays, and emergency surgical readiness.",
     highlight: "Zero-delay golden hour intervention",
-    image: "/images/facilities-emergency-care.avif"
+    image: "/assets/facilities/emergency-casualty-1400w.webp",
+    imageAlt: "24/7 Emergency and Dedicated Casualty Bays at Mahajan Hospital Satara"
   },
   {
     id: "ultramodern-icu",
@@ -332,7 +404,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Critical Care",
     description: "Equipped with multiparameter central monitoring systems, advanced mechanical ventilators, and round-the-clock intensivist coverage.",
     highlight: "1:1 specialized critical nursing ratio",
-    image: "/images/facilities-Ultramodern-ICU.avif"
+    image: "/assets/facilities/ultramodern-icu-1400w.webp",
+    imageAlt: "Ultramodern ICU Motorized Beds and Monitoring Systems at Mahajan Hospital"
   },
   {
     id: "modular-ot",
@@ -340,15 +413,15 @@ export const FACILITIES: FacilityItem[] = [
     category: "Surgical & Robotics",
     description: "Ultra-sterile surgical environment with HEPA filtration, laminar horizontal air currents, and positive air pressure to prevent surgical infections.",
     highlight: "Class 100 sterile surgical standard",
-    image: "/images/facilities-LASER-machines.avif"
+    image: "/assets/facilities/modular-laminar-ot-1400w.webp",
+    imageAlt: "Modular Operating Theatre with Laminar Air Flow HEPA Ceiling System at Mahajan Hospital"
   },
   {
     id: "joint-replacement-robot",
     name: "Joint Replacement Robot",
     category: "Surgical & Robotics",
     description: "Sub-millimeter accuracy in robotic joint replacements for maximum implant longevity, natural joint kinematics, and faster ambulation.",
-    highlight: "Sub-millimeter surgical accuracy",
-    image: "/images/dept1.jpg"
+    highlight: "Sub-millimeter surgical accuracy"
   },
   {
     id: "arthroscope",
@@ -356,7 +429,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Surgical & Robotics",
     description: "High-definition 4K optical visualization for keyhole ligament reconstructions, meniscus repairs, and shoulder stabilization.",
     highlight: "Minimally invasive keyhole procedures",
-    image: "/images/dept2.avif"
+    image: "/assets/facilities/arthroscope-1400w.webp",
+    imageAlt: "Stryker Arthroscopy and Endoscopic Surgical Tower in OT at Mahajan Hospital"
   },
   {
     id: "spine-microscope",
@@ -364,7 +438,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Surgical & Robotics",
     description: "State-of-the-art operating microscope providing brilliant 3D illumination for delicate spinal decompression and micro-discectomy.",
     highlight: "High-magnification neural protection",
-    image: "/images/dept3.avif"
+    image: "/assets/departments/neurosurgery-1400w.webp",
+    imageAlt: "Mobile Spine Operating Microscope at Mahajan Multispecialist Hospital"
   },
   {
     id: "c-arm-imaging",
@@ -372,15 +447,17 @@ export const FACILITIES: FacilityItem[] = [
     category: "Diagnostic",
     description: "Real-time intra-operative fluoroscopic imaging delivering instant multi-angle verification of bone alignment and hardware placement.",
     highlight: "Live intraoperative guidance",
-    image: "/images/facilities-room.avif"
+    image: "/assets/facilities/c-arm-imaging-1400w.webp",
+    imageAlt: "Surgix Flat-Panel C-Arm Intraoperative Fluoroscopy Unit at Mahajan Hospital"
   },
   {
     id: "inhouse-intensivist",
     name: "In-house Intensivist and Physician",
     category: "Critical Care",
-    description: "Dedicated full-time critical care specialists and medical physicians stationed physically on campus 24/7.",
+    description: "Dedicated full-time critical care specialists and medical physicians stationed physically on campus 24/7 with central ICU telemetry.",
     highlight: "Continuous on-site medical vigilance",
-    image: "/images/about-us5.avif"
+    image: "/assets/facilities/icu-monitoring-station-1400w.webp",
+    imageAlt: "Central ICU Nursing and Intensivist Monitoring Station at Mahajan Hospital"
   },
   {
     id: "dermatology-laser",
@@ -388,7 +465,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Diagnostic",
     description: "Medical-grade lasers for scar remodeling, skin resurfacing, vascular lesion treatment, and targeted pigment correction.",
     highlight: "US-FDA certified cosmetic platforms",
-    image: "/images/facilities-LASER-machines.avif"
+    image: "/assets/facilities/dermatology-laser-1400w.webp",
+    imageAlt: "Dermatology and Cosmetology Laser Treatment Equipment at Mahajan Hospital"
   },
   {
     id: "cssd",
@@ -396,7 +474,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Surgical & Robotics",
     description: "Hospital-grade sterilization with multi-stage ultrasonic cleaners and automated autoclave cycles ensuring zero cross-contamination.",
     highlight: "Stringent hospital-wide infection control",
-    image: "/images/about-us1.avif"
+    image: "/assets/facilities/cssd-autoclave-1400w.webp",
+    imageAlt: "CSSD Horizontal Cylindrical Steam Autoclave Sterilizer at Mahajan Hospital"
   },
   {
     id: "rooms-accommodation",
@@ -404,7 +483,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Patient Comfort",
     description: "Acoustically insulated, naturally lit patient rooms designed with peaceful aesthetic warmth to foster rapid healing and family comfort.",
     highlight: "Hotel-grade hygiene and serenity",
-    image: "/images/facilities-room.avif"
+    image: "/assets/facilities/deluxe-room-1400w.webp",
+    imageAlt: "Deluxe Private Patient Suite with Motorized Bed at Mahajan Hospital Satara"
   },
   {
     id: "consulting-rooms",
@@ -412,7 +492,17 @@ export const FACILITIES: FacilityItem[] = [
     category: "Patient Comfort",
     description: "Dedicated outpatient consulting chambers offering complete privacy and patient-doctor dialogue in calm, distraction-free suites.",
     highlight: "Private, unhurried consultations",
-    image: "/images/about-us-img.jpg"
+    image: "/assets/facilities/consulting-room-1400w.webp",
+    imageAlt: "Private Outpatient Consultation Chamber and Exam Couch at Mahajan Hospital"
+  },
+  {
+    id: "reception-waiting",
+    name: "Reception & Patient Waiting Lounges",
+    category: "Patient Comfort",
+    description: "Spacious, well-lit ground and first-floor reception desks with comfortable seating and clear corridor signage for visitors and patients.",
+    highlight: "Organized outpatient assistance",
+    image: "/assets/hospital/waiting-lounge-1400w.webp",
+    imageAlt: "Main Reception Counter and Patient Waiting Hall at Mahajan Hospital Satara"
   },
   {
     id: "pathology-lab",
@@ -420,7 +510,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Diagnostic",
     description: "In-house clinical biochemistry, haematology, and microbiology ensuring critical laboratory findings within minutes.",
     highlight: "Rapid emergency panel turnaround",
-    image: "/images/about-us2.avif"
+    image: "/assets/departments/pathology-1400w.webp",
+    imageAlt: "In-House Automated Clinical Pathology Laboratory at Mahajan Hospital Satara"
   },
   {
     id: "digital-xray",
@@ -428,7 +519,8 @@ export const FACILITIES: FacilityItem[] = [
     category: "Diagnostic",
     description: "Low-radiation high-resolution digital radiography providing immediate cloud-accessible radiographic images.",
     highlight: "Minimal radiation exposure",
-    image: "/images/about-us3.avif"
+    image: "/assets/departments/radiology-1400w.webp",
+    imageAlt: "Digital X-Ray Radiography Unit at Mahajan Multispecialist Hospital Satara"
   },
   {
     id: "ecg-2d-echo",
@@ -436,31 +528,29 @@ export const FACILITIES: FacilityItem[] = [
     category: "Diagnostic",
     description: "Instant cardiac diagnostics for accurate assessment of myocardial function, valve kinetics, and emergency chest symptoms.",
     highlight: "Immediate cardiac assessment",
-    image: "/images/facilities-emergency-care.avif"
+    image: "/assets/facilities/ecg-station-1400w.webp",
+    imageAlt: "Philips Digital ECG Diagnostic Station at Mahajan Hospital Satara"
   },
   {
     id: "pharmacy",
     name: "24/7 Pharmacy",
     category: "Patient Comfort",
     description: "Fully stocked on-premises pharmacy with genuine emergency injectables, surgical consumables, and therapeutic prescriptions.",
-    highlight: "24-hour uninterrupted drug availability",
-    image: "/images/mahajan-building.jpg"
+    highlight: "24-hour uninterrupted drug availability"
   },
   {
     id: "parking",
     name: "Parking Facilities",
     category: "Patient Comfort",
     description: "Designated, security-monitored vehicle parking with step-free wheelchair access and dedicated ambulance transit lanes.",
-    highlight: "Hassle-free patient & visitor access",
-    image: "/images/mahajan-building.jpg"
+    highlight: "Hassle-free patient & visitor access"
   },
   {
     id: "canteen",
     name: "Canteen",
     category: "Patient Comfort",
     description: "Hygienic cafeteria providing wholesome, dietitian-approved meal options and fresh refreshments for patients and accompanying relatives.",
-    highlight: "Nutritionally balanced fresh meals",
-    image: "/images/about-us-img.jpg"
+    highlight: "Nutritionally balanced fresh meals"
   }
 ];
 

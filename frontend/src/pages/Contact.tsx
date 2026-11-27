@@ -1,38 +1,25 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Send, 
-  CheckCircle, 
-  AlertCircle, 
-  MessageSquare,
-  ShieldCheck,
-  Calendar,
+import { useSearchParams } from 'react-router-dom';
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Send,
+  CheckCircle,
+  AlertCircle,
   Navigation,
-  MessageCircle
+  MessageCircle,
+  Edit3,
+  RotateCcw,
 } from 'lucide-react';
-import { HOSPITAL_INFO, DEPARTMENTS } from '../config/hospitalData';
+import { HOSPITAL_INFO } from '../config/hospitalData';
+import { AppointmentEnquiryForm, validatePhoneDigits } from '../components/AppointmentEnquiryForm';
+import { ResponsiveImage } from '../components/ResponsiveImage';
 
 export const Contact: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const initialDepartment = searchParams.get('department') || undefined;
   const [activeFormTab, setActiveFormTab] = useState<'appointment' | 'general'>('appointment');
-
-  // Appointment Form state
-  const [appointmentData, setAppointmentData] = useState({
-    full_name: '',
-    phone: '',
-    email: '',
-    department: 'Orthopaedics',
-    preferred_date: '',
-    message: ''
-  });
-
-  const [appointmentLoading, setAppointmentLoading] = useState(false);
-  const [appointmentSubmitted, setAppointmentSubmitted] = useState(false);
-  const [appointmentError, setAppointmentError] = useState<string | null>(null);
-  const [appointmentConfirmation, setAppointmentConfirmation] = useState<any>(null);
 
   // General Contact Form state
   const [contactData, setContactData] = useState({
@@ -40,82 +27,21 @@ export const Contact: React.FC = () => {
     phone: '',
     email: '',
     subject: '',
-    message: ''
+    message: '',
   });
 
-  const [contactLoading, setContactLoading] = useState(false);
-  const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactError, setContactError] = useState<string | null>(null);
-  const [contactConfirmation, setContactConfirmation] = useState<any>(null);
-
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDateStr = tomorrow.toISOString().split('T')[0];
-
-  const handleAppointmentChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setAppointmentData({
-      ...appointmentData,
-      [e.target.name]: e.target.value
-    });
-    if (appointmentError) setAppointmentError(null);
-  };
+  const [contactPrepared, setContactPrepared] = useState<{
+    whatsappUrl: string;
+    popupBlocked: boolean;
+  } | null>(null);
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setContactData({
       ...contactData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     if (contactError) setContactError(null);
-  };
-
-  const handleAppointmentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setAppointmentError(null);
-
-    if (!appointmentData.full_name.trim()) {
-      setAppointmentError('Please enter your full name.');
-      return;
-    }
-
-    const cleanedPhone = appointmentData.phone.replace(/[\s\-\(\)\+]/g, '');
-    if (!cleanedPhone || cleanedPhone.length < 10) {
-      setAppointmentError('Please enter a valid 10-digit phone number.');
-      return;
-    }
-
-    if (!appointmentData.preferred_date) {
-      setAppointmentError('Please select your preferred appointment date.');
-      return;
-    }
-
-    // Build formatted message for WhatsApp Business
-    const lines = [
-      'Hello Mahajan Hospital, I would like to submit an appointment enquiry:',
-      '',
-      `*Full Name:* ${appointmentData.full_name.trim()}`,
-      `*Phone Number:* ${appointmentData.phone.trim()}`,
-    ];
-    if (appointmentData.email && appointmentData.email.trim()) {
-      lines.push(`*Email:* ${appointmentData.email.trim()}`);
-    }
-    lines.push(`*Department:* ${appointmentData.department}`);
-    lines.push(`*Preferred Date:* ${appointmentData.preferred_date}`);
-    if (appointmentData.message && appointmentData.message.trim()) {
-      lines.push(`*Message:* ${appointmentData.message.trim()}`);
-    }
-
-    const text = lines.join('\n');
-    const whatsappUrl = `https://wa.me/919075023025?text=${encodeURIComponent(text)}`;
-
-    window.open(whatsappUrl, '_blank');
-
-    setAppointmentConfirmation({
-      fullName: appointmentData.full_name.trim(),
-      department: appointmentData.department,
-      preferredDate: appointmentData.preferred_date,
-      enquiryId: `MH-${Date.now().toString().slice(-5)}`
-    });
-    setAppointmentSubmitted(true);
   };
 
   const handleContactSubmit = (e: React.FormEvent) => {
@@ -127,9 +53,8 @@ export const Contact: React.FC = () => {
       return;
     }
 
-    const cleanedPhone = contactData.phone.replace(/[\s\-\(\)\+]/g, '');
-    if (!cleanedPhone || cleanedPhone.length < 10) {
-      setContactError('Please enter a valid phone number.');
+    if (!validatePhoneDigits(contactData.phone)) {
+      setContactError('Please enter a valid 10-digit mobile number.');
       return;
     }
 
@@ -138,32 +63,31 @@ export const Contact: React.FC = () => {
       return;
     }
 
-    // Build formatted message for WhatsApp Business
     const lines = [
-      'Hello Mahajan Hospital, I would like to submit a general enquiry:',
+      'Hello Mahajan Hospital,',
       '',
-      `*Name:* ${contactData.name.trim()}`,
-      `*Phone Number:* ${contactData.phone.trim()}`,
+      'I would like to submit a general enquiry.',
+      '',
+      `Name: ${contactData.name.trim()}`,
+      `Mobile Number: ${contactData.phone.trim()}`,
     ];
-    if (contactData.email && contactData.email.trim()) {
-      lines.push(`*Email:* ${contactData.email.trim()}`);
+    if (contactData.email.trim()) {
+      lines.push(`Email: ${contactData.email.trim()}`);
     }
-    if (contactData.subject && contactData.subject.trim()) {
-      lines.push(`*Subject:* ${contactData.subject.trim()}`);
+    if (contactData.subject.trim()) {
+      lines.push(`Subject: ${contactData.subject.trim()}`);
     }
-    lines.push(`*Message:* ${contactData.message.trim()}`);
+    lines.push(`Message: ${contactData.message.trim()}`);
 
     const text = lines.join('\n');
-    const whatsappUrl = `https://wa.me/919075023025?text=${encodeURIComponent(text)}`;
+    const whatsappUrl = `https://wa.me/${HOSPITAL_INFO.contact.opdPhoneClean}?text=${encodeURIComponent(text)}`;
+    const opened = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
 
-    window.open(whatsappUrl, '_blank');
-
-    setContactConfirmation({
-      name: contactData.name.trim(),
-      subject: contactData.subject.trim() || 'General Enquiry',
-      referenceNumber: `MSG-${Date.now().toString().slice(-5)}`
+    // Keep contactData intact so values are preserved if WhatsApp cannot open
+    setContactPrepared({
+      whatsappUrl,
+      popupBlocked: !opened,
     });
-    setContactSubmitted(true);
   };
 
   return (
@@ -173,13 +97,13 @@ export const Contact: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-sky-300 border border-white/15 mb-4">
-              Patient Care & Coordination
+              Patient Care &amp; Coordination
             </span>
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
-              Contact & Appointments.
+              Contact &amp; Appointment Enquiry.
             </h1>
             <p className="mt-4 text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl">
-              Connect with our medical coordinators for specialist consultations, OPD timings, second opinions, or emergency casualty admissions.
+              Connect directly with our hospital desk via WhatsApp Business for specialist consultations, OPD timings, or emergency casualty support in Satara.
             </p>
           </div>
         </div>
@@ -188,8 +112,28 @@ export const Contact: React.FC = () => {
       {/* Main Content */}
       <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Direct Coordinates & Actions (5 Cols) */}
+          {/* Left Column: Authentic Reception Photo, Direct Coordinates & Map (5 Cols) */}
           <div className="lg:col-span-5 space-y-6">
+            {/* Authentic Reception & Waiting Confidence Photo */}
+            <div className="relative aspect-[3/2] rounded-2xl overflow-hidden border border-hospital-border shadow-subtle bg-white group">
+              <ResponsiveImage
+                src="/assets/hospital/ortho-reception-1400w.webp"
+                alt="Main Orthopaedic Reception and Hospital Desk at Mahajan Hospital Satara"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                sizes="(max-width: 1024px) 100vw, 480px"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-hospital-navy/85 via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-5 right-5 text-white">
+                <span className="text-[10px] uppercase tracking-widest text-sky-300 font-semibold block">
+                  Powai Naka • Satara
+                </span>
+                <p className="text-xs sm:text-sm font-semibold text-white">
+                  Main Patient Reception &amp; Enquiry Desk
+                </p>
+              </div>
+            </div>
+
             <div className="p-6 sm:p-8 rounded-2xl bg-white border border-hospital-border shadow-subtle space-y-6">
               <h3 className="text-xl font-bold text-hospital-navy pb-3 border-b border-hospital-border">
                 Hospital Information
@@ -214,7 +158,7 @@ export const Contact: React.FC = () => {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-xs uppercase tracking-wider font-semibold text-hospital-muted">Appointment / OPD</h4>
+                  <h4 className="text-xs uppercase tracking-wider font-semibold text-hospital-muted">Appointment / OPD &amp; WhatsApp</h4>
                   <a
                     href={`tel:${HOSPITAL_INFO.contact.opdPhoneClean}`}
                     className="text-base font-bold text-hospital-navy hover:text-hospital-accent transition-colors block mt-0.5"
@@ -270,7 +214,7 @@ export const Contact: React.FC = () => {
                   className="flex-1 min-w-[130px] inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition-colors"
                 >
                   <MessageCircle className="w-4 h-4" />
-                  <span>WhatsApp</span>
+                  <span>Direct WhatsApp</span>
                 </a>
                 <a
                   href={HOSPITAL_INFO.contact.mapsUrl}
@@ -298,7 +242,7 @@ export const Contact: React.FC = () => {
           </div>
 
           {/* Right Column: Forms with Tab Toggle (7 Cols) */}
-          <div className="lg:col-span-7">
+          <div id="appointment-enquiry" className="lg:col-span-7 scroll-mt-28">
             <div className="p-6 sm:p-10 rounded-2xl bg-white border border-hospital-border shadow-subtle">
               {/* Form Switcher */}
               <div className="flex border-b border-hospital-border mb-6">
@@ -311,7 +255,7 @@ export const Contact: React.FC = () => {
                       : 'border-transparent text-hospital-muted hover:text-hospital-navy'
                   }`}
                 >
-                  Book Appointment Enquiry
+                  Book an Appointment
                 </button>
                 <button
                   type="button"
@@ -326,210 +270,66 @@ export const Contact: React.FC = () => {
                 </button>
               </div>
 
-              {/* Form 1: Appointment Form */}
+              {/* Form 1: Customized WhatsApp Appointment Enquiry Form */}
               {activeFormTab === 'appointment' && (
-                <div>
-                  {appointmentSubmitted && appointmentConfirmation ? (
-                    <div className="p-8 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-center space-y-4">
-                      <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto">
-                        <CheckCircle className="w-8 h-8" />
-                      </div>
-                      <h4 className="text-xl font-bold text-emerald-950">
-                        Appointment Enquiry Logged
-                      </h4>
-                      <p className="text-sm text-emerald-800 max-w-md mx-auto leading-relaxed">
-                        Thank you, <strong>{appointmentConfirmation.fullName}</strong>. Your enquiry for{' '}
-                        <strong>{appointmentConfirmation.department}</strong> on{' '}
-                        <strong>{appointmentConfirmation.preferredDate}</strong> has been received with reference number{' '}
-                        <span className="font-mono font-bold bg-white px-2 py-0.5 rounded border border-emerald-300">
-                          {appointmentConfirmation.enquiryId}
-                        </span>.
-                      </p>
-                      <div className="p-4 rounded-xl bg-white border border-emerald-200 text-xs text-slate-700 text-left max-w-md mx-auto space-y-1.5">
-                        <div className="flex items-center gap-1.5 font-semibold text-emerald-900">
-                          <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                          <span>Appointment Confirmation Notice:</span>
-                        </div>
-                        <p>
-                          This is an enquiry submission system, not an instant booking. Our hospital desk will verify doctor availability and contact you via phone at <strong>{appointmentData.phone}</strong> to confirm your exact appointment slot.
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          setAppointmentSubmitted(false);
-                          setAppointmentData({
-                            full_name: '',
-                            phone: '',
-                            email: '',
-                            department: 'Orthopaedics',
-                            preferred_date: '',
-                            message: ''
-                          });
-                        }}
-                        className="px-5 py-2.5 rounded-xl border border-emerald-300 text-emerald-900 font-semibold text-xs uppercase tracking-wider hover:bg-emerald-100 transition-colors"
-                      >
-                        Submit Another Enquiry
-                      </button>
-                    </div>
-                  ) : (
-                    <form onSubmit={handleAppointmentSubmit} className="space-y-5">
-                      {appointmentError && (
-                        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2">
-                          <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                          <span>{appointmentError}</span>
-                        </div>
-                      )}
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                          <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                            Full Name <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="text"
-                            name="full_name"
-                            required
-                            value={appointmentData.full_name}
-                            onChange={handleAppointmentChange}
-                            placeholder="e.g. Ramesh Kulkarni"
-                            className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                            Phone Number <span className="text-red-500">*</span>
-                          </label>
-                          <input
-                            type="tel"
-                            name="phone"
-                            required
-                            value={appointmentData.phone}
-                            onChange={handleAppointmentChange}
-                            placeholder="e.g. 9876543210"
-                            className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div>
-                          <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                            Email <span className="text-slate-400 font-normal lowercase">(optional)</span>
-                          </label>
-                          <input
-                            type="email"
-                            name="email"
-                            value={appointmentData.email}
-                            onChange={handleAppointmentChange}
-                            placeholder="e.g. patient@gmail.com"
-                            className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                            Speciality Department <span className="text-red-500">*</span>
-                          </label>
-                          <select
-                            name="department"
-                            required
-                            value={appointmentData.department}
-                            onChange={handleAppointmentChange}
-                            className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
-                          >
-                            {DEPARTMENTS.map((dept) => (
-                              <option key={dept.id} value={dept.name}>
-                                {dept.name}
-                              </option>
-                            ))}
-                            <option value="General OPD / Consultation">General OPD / Consultation</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                          Preferred Appointment Date <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="date"
-                          name="preferred_date"
-                          required
-                          min={minDateStr}
-                          value={appointmentData.preferred_date}
-                          onChange={handleAppointmentChange}
-                          className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                          Medical Requirement / Symptoms <span className="text-slate-400 font-normal lowercase">(optional)</span>
-                        </label>
-                        <textarea
-                          name="message"
-                          rows={3}
-                          value={appointmentData.message}
-                          onChange={handleAppointmentChange}
-                          placeholder="Briefly describe your symptoms or past surgical history..."
-                          className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
-                        />
-                      </div>
-
-                      <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-600">
-                        <strong>Notice:</strong> This form logs an appointment enquiry. The hospital coordination team must confirm doctor schedule before your slot is finalized.
-                      </div>
-
-                      <button
-                        type="submit"
-                        disabled={appointmentLoading}
-                        className="w-full py-4 px-6 rounded-xl bg-hospital-navy hover:bg-hospital-charcoal text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-subtle disabled:opacity-60"
-                      >
-                        {appointmentLoading ? (
-                          <span className="flex items-center gap-2">
-                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                            Connecting to Database...
-                          </span>
-                        ) : (
-                          <>
-                            <Calendar className="w-4 h-4 text-sky-400" />
-                            <span>Submit Appointment Enquiry</span>
-                          </>
-                        )}
-                      </button>
-                    </form>
-                  )}
-                </div>
+                <AppointmentEnquiryForm
+                  idPrefix="page_appt"
+                  initialDepartment={initialDepartment}
+                />
               )}
 
               {/* Form 2: General Contact Form */}
               {activeFormTab === 'general' && (
                 <div>
-                  {contactSubmitted && contactConfirmation ? (
+                  {contactPrepared ? (
                     <div className="p-8 rounded-2xl bg-sky-50/70 border border-sky-200 text-center space-y-4">
                       <div className="w-14 h-14 rounded-full bg-sky-100 text-hospital-accent flex items-center justify-center mx-auto">
                         <CheckCircle className="w-8 h-8" />
                       </div>
                       <h4 className="text-xl font-bold text-hospital-navy">
-                        Message Sent Successfully
+                        WhatsApp Message Ready
                       </h4>
                       <p className="text-sm text-hospital-slate max-w-md mx-auto leading-relaxed">
-                        Thank you, <strong>{contactConfirmation.name}</strong>. Your enquiry has been received under reference{' '}
-                        <span className="font-mono font-bold bg-white px-2 py-0.5 rounded border border-sky-300">
-                          {contactConfirmation.referenceNumber}
-                        </span>. Our administration desk will reply shortly.
+                        Thank you, <strong>{contactData.name}</strong>. Please tap <strong>Send</strong> inside WhatsApp to deliver your message to our hospital desk.
                       </p>
+                      {contactPrepared.popupBlocked && (
+                        <p className="text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-xl p-3 max-w-md mx-auto">
+                          Your browser blocked opening WhatsApp automatically. Your entered message is preserved — tap below to open WhatsApp directly.
+                        </p>
+                      )}
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                        <a
+                          href={contactPrepared.whatsappUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-xs uppercase tracking-wider hover:bg-emerald-700 transition-colors inline-flex items-center justify-center gap-2"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                          <span>Open WhatsApp &amp; Send</span>
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => setContactPrepared(null)}
+                          className="w-full sm:w-auto px-5 py-3 rounded-xl border border-sky-300 text-hospital-navy font-semibold text-xs uppercase tracking-wider hover:bg-sky-100 transition-colors inline-flex items-center justify-center gap-1.5"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                          <span>Edit Details</span>
+                        </button>
+                      </div>
                       <button
+                        type="button"
                         onClick={() => {
-                          setContactSubmitted(false);
+                          setContactPrepared(null);
                           setContactData({ name: '', phone: '', email: '', subject: '', message: '' });
                         }}
-                        className="px-5 py-2.5 rounded-xl border border-sky-300 text-hospital-navy font-semibold text-xs uppercase tracking-wider hover:bg-sky-100 transition-colors"
+                        className="inline-flex items-center gap-1 text-xs text-slate-600 hover:text-hospital-navy"
                       >
-                        Send Another Message
+                        <RotateCcw className="w-3 h-3" />
+                        <span>Clear &amp; Start New Enquiry</span>
                       </button>
                     </div>
                   ) : (
-                    <form onSubmit={handleContactSubmit} className="space-y-5">
+                    <form onSubmit={handleContactSubmit} className="space-y-5" noValidate>
                       {contactError && (
                         <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2">
                           <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
@@ -554,7 +354,7 @@ export const Contact: React.FC = () => {
                         </div>
                         <div>
                           <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                            Phone Number <span className="text-red-500">*</span>
+                            Mobile Number <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="tel"
@@ -584,14 +384,14 @@ export const Contact: React.FC = () => {
                         </div>
                         <div>
                           <label className="block text-xs uppercase tracking-wider font-semibold text-hospital-navy mb-1.5">
-                            Subject
+                            Subject <span className="text-slate-400 font-normal lowercase">(optional)</span>
                           </label>
                           <input
                             type="text"
                             name="subject"
                             value={contactData.subject}
                             onChange={handleContactChange}
-                            placeholder="e.g. Second opinion / Room inquiry"
+                            placeholder="e.g. OPD timing / Room enquiry"
                             className="w-full px-4 py-3 rounded-xl border border-hospital-border bg-hospital-soft/40 text-hospital-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-hospital-accent focus:bg-white"
                           />
                         </div>
@@ -614,20 +414,10 @@ export const Contact: React.FC = () => {
 
                       <button
                         type="submit"
-                        disabled={contactLoading}
-                        className="w-full py-4 px-6 rounded-xl bg-hospital-navy hover:bg-hospital-charcoal text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-subtle disabled:opacity-60"
+                        className="w-full py-4 px-6 rounded-xl bg-hospital-navy hover:bg-hospital-charcoal text-white font-semibold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-subtle"
                       >
-                        {contactLoading ? (
-                          <span className="flex items-center gap-2">
-                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                            Sending Message...
-                          </span>
-                        ) : (
-                          <>
-                            <Send className="w-4 h-4 text-sky-400" />
-                            <span>Send Message</span>
-                          </>
-                        )}
+                        <Send className="w-4 h-4 text-sky-400" />
+                        <span>Send Enquiry via WhatsApp</span>
                       </button>
                     </form>
                   )}
